@@ -33,4 +33,44 @@
  */
 export function calculateDosaOrder(type, quantity = 1, isSpicy = false) {
   // Your code here
+
+  function orderDescription(dosaPrice) {
+    const extraSpicy = 10;
+    if (isSpicy) dosaPrice += extraSpicy;
+    return {
+      type: type,
+      quantity: quantity,
+      pricePerDosa: dosaPrice,
+      total: dosaPrice * quantity,
+    };
+  }
+
+  if (quantity <= 0) {
+    return null;
+  }
+
+  let dosaPrice;
+  switch (type) {
+    case "plain":
+      dosaPrice = 40;
+      return orderDescription(dosaPrice);
+    case "masala":
+      dosaPrice = 60;
+      return orderDescription(dosaPrice);
+    case "onion":
+      dosaPrice = 50;
+      return orderDescription(dosaPrice);
+    case "butter":
+      dosaPrice = 70;
+      return orderDescription(dosaPrice);
+    case "paper":
+      dosaPrice = 90;
+      return orderDescription(dosaPrice);
+    case "cheese":
+      dosaPrice = 80;
+      return orderDescription(dosaPrice);
+
+    default:
+      return null;
+  }
 }
