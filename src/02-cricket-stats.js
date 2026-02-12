@@ -39,20 +39,89 @@
  */
 export const calcStrikeRate = (runs, balls) => {
   // Your code here
+  if (balls <= 0 || runs < 0) return 0;
+
+  const strikeRate = (runs / balls) * 100;
+  if (Number.isInteger(strikeRate)) {
+    return strikeRate;
+  }
+  return parseFloat(strikeRate.toFixed(2));
 };
 
 export const calcEconomy = (runsConceded, overs) => {
   // Your code here
+  if (overs <= 0 || runsConceded < 0) {
+    return 0;
+  }
+
+  const economy = runsConceded / overs;
+  return Number.isInteger(economy) ? economy : parseFloat(economy.toFixed(2));
 };
 
 export const calcBattingAvg = (totalRuns, innings, notOuts = 0) => {
   // Your code here
+  if (innings - notOuts <= 0) {
+    return 0;
+  }
+  const battingAvg = totalRuns / (innings - notOuts);
+  return Number.isInteger(battingAvg)
+    ? battingAvg
+    : parseFloat(battingAvg.toFixed(2));
 };
 
 export const isAllRounder = (battingAvg, economy) => {
   // Your code here
+  return battingAvg > 30 && economy < 8 ? true : false;
 };
 
 export const getPlayerCard = (player) => {
   // Your code here
+  if (player === null || player === undefined || player.name === undefined) {
+    return null;
+  }
+
+  const playerStrikeRate = (runs, balls) => {
+    if (balls <= 0 || runs < 0) return 0;
+
+    const strikeRate = (runs / balls) * 100;
+    if (Number.isInteger(strikeRate)) {
+      return strikeRate;
+    }
+    return parseFloat(strikeRate.toFixed(2));
+  };
+
+  const playerEconomy = (runsConceded, overs) => {
+    if (overs <= 0 || runsConceded < 0) {
+      return 0;
+    }
+
+    const economy = runsConceded / overs;
+    return Number.isInteger(economy) ? economy : parseFloat(economy.toFixed(2));
+  };
+
+  const playerBattingAvg = (totalRuns, innings, notOuts = 0) => {
+    if (innings - notOuts <= 0) {
+      return 0;
+    }
+    const battingAvg = totalRuns / (innings - notOuts);
+    return Number.isInteger(battingAvg)
+      ? battingAvg
+      : parseFloat(battingAvg.toFixed(2));
+  };
+
+  const playerAllRounder = (battingAvg, economy) => {
+    return battingAvg > 30 && economy < 8 ? true : false;
+  };
+
+  return {
+    name: player.name,
+    strikeRate: playerStrikeRate(player.runs, player.balls),
+    economy: playerEconomy(player.runsConceded, player.overs),
+    battingAvg: playerBattingAvg(
+      player.totalRuns,
+      player.innings,
+      player.notOuts,
+    ),
+    isAllRounder: playerAllRounder(player.battingAvg, player.economy),
+  };
 };
