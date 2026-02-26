@@ -46,12 +46,91 @@
  */
 export function createDialogueWriter(genre) {
   // Your code here
+  switch (genre) {
+    case "action":
+      return myFactoryFunction;
+    case "romance":
+      return myFactoryFunction;
+    case "comedy":
+      return myFactoryFunction;
+    case "drama":
+      return myFactoryFunction;
+    default:
+      return null;
+  }
+  function myFactoryFunction(hero, villain) {
+    if (
+      hero === "" ||
+      hero === undefined ||
+      villain === "" ||
+      villain === undefined
+    ) {
+      return "...";
+    }
+    if (genre === "action") {
+      return `${hero} says: 'Tujhe toh main dekh lunga, ${villain}!'`;
+    } else if (genre === "romance") {
+      return `${hero} whispers: '${villain}, tum mere liye sab kuch ho'`;
+    } else if (genre === "comedy") {
+      return `${hero} laughs: '${villain} bhai, kya kar rahe ho yaar!'`;
+    } else {
+      return `${hero} cries: '${villain}, tune mera sab kuch cheen liya!'`;
+    }
+  }
 }
 
 export function createTicketPricer(basePrice) {
   // Your code here
+
+  const calTicketPrice = (seatType, isWeekend = false) => {
+    const silverMultiplier = 1;
+    const goldMultiplier = 1.5;
+    const platinumMultiplier = 2;
+    const weekendMultiplier = 1.3;
+    switch (seatType) {
+      case "silver":
+        return isWeekend
+          ? basePrice * silverMultiplier * weekendMultiplier
+          : basePrice * silverMultiplier;
+      case "gold":
+        return isWeekend
+          ? basePrice * goldMultiplier * weekendMultiplier
+          : basePrice * goldMultiplier;
+      case "platinum":
+        return isWeekend
+          ? basePrice * platinumMultiplier * weekendMultiplier
+          : basePrice * platinumMultiplier;
+      default:
+        return null;
+    }
+  };
+
+  if (typeof basePrice !== "number" || basePrice <= 0) {
+    return null;
+  }
+  return calTicketPrice;
 }
 
 export function createRatingCalculator(weights) {
   // Your code here
+  if (
+    typeof weights !== "object" ||
+    weights === null ||
+    weights === undefined
+  ) {
+    return null;
+  }
+  return calculateRating;
+
+  function calculateRating(score) {
+    const scoreKeys = Object.keys(score);
+    const weightKeys = Object.keys(weights);
+    const result = scoreKeys.reduce((total, value) => {
+      if (weightKeys.includes(value)) {
+        total = total + weights[value] * score[value];
+      }
+      return total;
+    }, 0);
+    return parseFloat(result.toFixed(1));
+  }
 }
