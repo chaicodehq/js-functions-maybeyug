@@ -50,4 +50,74 @@
  */
 export function createDabbawala(name, area) {
   // Your code here
+
+  let nextID = 0;
+  const deliveryArray = [];
+
+  const createAddDelivery = (from, to) => {
+    if (from === undefined || to === undefined || from === "" || to === "") {
+      return -1;
+    }
+    let newDelivery = {
+      id: ++nextID,
+      from,
+      to,
+      status: "pending",
+    };
+    deliveryArray.push(newDelivery);
+    // nextID++;
+    return nextID;
+  };
+
+  const createCompleteDelivery = (id) => {
+    if (typeof id !== "number") {
+      return false;
+    }
+    const isIdExist = deliveryArray.find((item) => item.id === id);
+    if (!isIdExist) return false;
+    if (isIdExist.status === "pending") {
+      isIdExist.status = "completed";
+      return true;
+    }
+    return false;
+  };
+  const createGetActiveDeliveries = () => {
+    const result = deliveryArray.filter((item) => item.status === "pending");
+    return result;
+  };
+  const createGetState = () => {
+    let calTotal = deliveryArray.length;
+    let calPending = 0;
+    let calComplete = 0;
+    let calSuccessRate;
+    deliveryArray.forEach((item) => {
+      if (item.status === "pending") calPending++;
+      if (item.status === "completed") calComplete++;
+    });
+    if (calTotal === 0) calSuccessRate = "0.00%";
+    else {
+      calSuccessRate = ((calComplete / calTotal) * 100).toFixed(2) + "%";
+    }
+    return {
+      name,
+      area,
+      total: calTotal,
+      completed: calComplete,
+      pending: calPending,
+      successRate: calSuccessRate,
+    };
+  };
+  const createReset = () => {
+    deliveryArray.length = 0;
+    nextID = 0;
+    return true;
+  };
+
+  return {
+    addDelivery: createAddDelivery,
+    completeDelivery: createCompleteDelivery,
+    getActiveDeliveries: createGetActiveDeliveries,
+    getStats: createGetState,
+    reset: createReset,
+  };
 }

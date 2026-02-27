@@ -54,10 +54,19 @@
  */
 export function repeatChar(char, n) {
   // Your code here
+  if (typeof char !== "string" || char === "") {
+    return "";
+  }
+  if (n <= 0) return "";
+  return char + repeatChar(char, n - 1);
 }
 
 export function sumNestedArray(arr) {
   // Your code here
+  if (!Array.isArray(arr) || arr.length === 0) return 0;
+  let index = 0;
+  if (arr[index] === undefined || typeof arr[index] === "string") return;
+  else return arr[index] + sumNestedArray(arr[index++]);
 }
 
 export function flattenArray(arr) {
