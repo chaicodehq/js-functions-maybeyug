@@ -64,19 +64,48 @@ export function repeatChar(char, n) {
 export function sumNestedArray(arr) {
   // Your code here
   if (!Array.isArray(arr) || arr.length === 0) return 0;
-  let index = 0;
-  if (arr[index] === undefined || typeof arr[index] === "string") return;
-  else return arr[index] + sumNestedArray(arr[index++]);
+  // let valAtZeroIndex = arr[0];
+  // if (Array.isArray(valAtZeroIndex)) return sumNestedArray(valAtZeroIndex);
+  // else if (typeof valAtZeroIndex !== "number")
+  //   return sumNestedArray(arr.slice(1).flat());
+  // return valAtZeroIndex + sumNestedArray(arr.slice(1).flat());
+
+  //Another way
+  const firstVal = arr[0];
+  const restVal = arr.slice(1);
+  if (Array.isArray(firstVal))
+    return sumNestedArray(firstVal) + sumNestedArray(restVal);
+  else if (typeof firstVal !== "number") return sumNestedArray(restVal);
+  return firstVal + sumNestedArray(restVal);
 }
 
 export function flattenArray(arr) {
   // Your code here
+  if (!Array.isArray(arr) || arr.length === 0) return [];
+  const tempVal = arr[0];
+  const restVal = arr.slice(1);
+  if (Array.isArray(tempVal))
+    return flattenArray(tempVal).concat(flattenArray(restVal));
+  return [tempVal].concat(flattenArray(restVal));
 }
 
 export function isPalindrome(str) {
   // Your code here
+  if (typeof str !== "string") return false;
+  if (str.length <= 1) return true;
+  return (
+    str.charAt(0).toLowerCase() === str.charAt(str.length - 1).toLowerCase() &&
+    isPalindrome(str.slice(1, -1))
+  );
 }
 
 export function generatePattern(n) {
   // Your code here
+  if (!Number.isInteger(n) || n <= 0) return [];
+  if (n === 1) return ["*"];
+  const current = "*".repeat(n);
+  const prev = generatePattern(n - 1);
+  const ascendingPart = prev.slice(0, Math.ceil(prev.length / 2));
+
+  return ascendingPart.concat(current).concat(ascendingPart.slice().reverse());
 }

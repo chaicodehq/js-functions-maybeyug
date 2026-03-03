@@ -46,6 +46,13 @@
  */
 export function createFilter(field, operator, value) {
   // Your code here
+  const allOperator = [">", "<", ">=", "<=", "==="];
+  if (!allOperator.includes(operator)) return false;
+  function filterObject(obj) {
+    const temp = `${obj.field} ${operator} ${value}`;
+    return temp;
+  }
+  return filterObject;
 }
 
 export function createSorter(field, order = "asc") {
