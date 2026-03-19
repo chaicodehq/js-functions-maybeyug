@@ -46,23 +46,59 @@
  */
 export function createFilter(field, operator, value) {
   // Your code here
-  const allOperator = [">", "<", ">=", "<=", "==="];
-  if (!allOperator.includes(operator)) return false;
   function filterObject(obj) {
-    const temp = `${obj.field} ${operator} ${value}`;
-    return temp;
+    switch (operator) {
+      case ">":
+        return obj[field] > value;
+      case "<":
+        return obj[field] < value;
+      case ">=":
+        return obj[field] >= value;
+      case "<=":
+        return obj[field] <= value;
+      case "===":
+        return obj[field] === value;
+      default:
+        return false;
+    }
   }
   return filterObject;
 }
 
 export function createSorter(field, order = "asc") {
   // Your code here
+  function comparatorFunction() {
+    if (order === "desc") {
+      return (a, b) => (b[field] > a[field] ? 1 : -1);
+    } else {
+      return (a, b) => (a[field] > b[field] ? 1 : -1);
+    }
+  }
+  return comparatorFunction();
 }
 
 export function createMapper(fields) {
   // Your code here
+  function giveMeObject(obj) {
+    const newObject = {};
+    for (let i = 0; i < fields.length; i++) {
+      if (obj[fields[i]] !== undefined) {
+        newObject[fields[i]] = obj[fields[i]];
+      }
+    }
+    return newObject;
+  }
+  return giveMeObject;
 }
 
 export function applyOperations(data, ...operations) {
   // Your code here
+  if (!Array.isArray(data)) return [];
+  if (operations.length === 0) return data;
+
+  const newData = data
+    .filter(createFilter("rating", ">=", 4))
+    .sort(createSorter("rating", "desc"))
+    .map(createMapper(["name", "rating"]));
+  return newData;
 }
